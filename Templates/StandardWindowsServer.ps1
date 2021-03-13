@@ -11,6 +11,8 @@ configuration StandardWindowsServer {
             Ensure = 'Present'
         }  
 
+
+
             
         # Web server role:        
         WindowsFeature WebServer {
@@ -33,6 +35,8 @@ configuration StandardWindowsServer {
         }
 
 
+
+
         # DHCP server role:        
         WindowsFeature DHCP {
             Name = 'DHCP'
@@ -45,6 +49,8 @@ configuration StandardWindowsServer {
             Type = 'File'
             Ensure = 'Present'
         }
+
+
 
 
         # Hyper-V server role:        
@@ -61,6 +67,8 @@ configuration StandardWindowsServer {
         # }
 
 
+
+
         # Active Directory Domain Services role:        
         WindowsFeature ADDS {
             Name = 'AD-Domain-Services'
@@ -75,6 +83,8 @@ configuration StandardWindowsServer {
         }
 
 
+        
+
         # File and Storage Server role:        
         WindowsFeature File-Server {
             Name = 'FileAndStorage-Services'
@@ -88,6 +98,37 @@ configuration StandardWindowsServer {
             Ensure = 'Present'
         }
 
+
+
+
+        # Print Server role:        
+        WindowsFeature PrintServices {
+            Name = 'Print-Services'
+            Ensure = 'Present'
+        }
+        
+        File PrintS {
+            DestinationPath = 'C:\DSC\Print-Server-Installed.txt'
+            Contents = 'Print Server role installed'
+            Type = 'File'
+            Ensure = 'Present'
+        }
+
+
+
+        # Windows Configurations settings - Those settings below are usually standard and applied to every server
+
+        # Set timezone to PST
+        xTimeZone TimePST {
+            TimeZone = 'Pacific Standard Time'            
+        }
+
+        File TimeZ {
+            DestinationPath = 'C:\DSC\Timezone-Set-to-PST.txt'
+            Contents = 'Timezone Set'
+            Type = 'File'
+            Ensure = 'Present'
+        }
 
 
 
