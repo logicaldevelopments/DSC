@@ -48,31 +48,46 @@ configuration StandardWindowsServer {
 
 
         # Hyper-V server role:        
-        WindowsFeature DHCP {
-            Name = 'Hyper-V'
-            Ensure = 'Present'
-        }
+        # WindowsFeature HyperV {
+        #     Name = 'Hyper-V'
+        #     Ensure = 'Present'
+        # }
         
-        File HyperV {
-            DestinationPath = 'C:\DSC\Hyper-V-Server-Installed.txt'
-            Contents = 'Hyper-V Server role installed '
-            Type = 'File'
-            Ensure = 'Present'
-        }
+        # File HyperV {
+        #     DestinationPath = 'C:\DSC\Hyper-V-Server-Installed.txt'
+        #     Contents = 'Hyper-V Server role installed '
+        #     Type = 'File'
+        #     Ensure = 'Present'
+        # }
 
 
-        # Active Directory Domain Services:        
-        WindowsFeature AD DS {
+        # Active Directory Domain Services role:        
+        WindowsFeature ADDS {
             Name = 'AD-Domain-Services'
             Ensure = 'Present'
         }
         
-        File ADDS {
+        File ADDSserver {
             DestinationPath = 'C:\DSC\ADDS-Server-Installed.txt'
-            Contents = 'AD DS Server server role installed'
+            Contents = 'AD DS Server role installed'
             Type = 'File'
             Ensure = 'Present'
         }
+
+
+        # File and Storage Server role:        
+        WindowsFeature File-Server {
+            Name = 'FileAndStorage-Services'
+            Ensure = 'Present'
+        }
+        
+        File FileStor {
+            DestinationPath = 'C:\DSC\File-Server-Installed.txt'
+            Contents = 'File and Storage Server role installed'
+            Type = 'File'
+            Ensure = 'Present'
+        }
+
 
 
 
@@ -80,4 +95,4 @@ configuration StandardWindowsServer {
 
 } #configuration
 
-StandardWebServer -OutputPath C:\DSC -Verbose
+StandardWindowsServer -OutputPath C:\DSC -Verbose
