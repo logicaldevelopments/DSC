@@ -1,3 +1,12 @@
+$MyData =
+@{
+    AllNodes = @()
+    NonNodeData = ""
+}
+
+
+
+
 configuration StandardWindowsServer {
 
     Node DC01 { # Name of the server managed by the configuration file
