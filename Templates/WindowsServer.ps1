@@ -1,10 +1,3 @@
-$MyData =
-@{
-    AllNodes = @()
-    NonNodeData = ""
-}
-
-
 
 
 configuration StandardWindowsServer {
@@ -128,7 +121,7 @@ configuration StandardWindowsServer {
         # Windows Configurations settings - Those settings below are usually standard and applied to every server
 
         # Set timezone to PST
-        xTimeZone TimePST {
+        TimeZone TimePST {
             TimeZone = 'Pacific Standard Time'            
         }
 
