@@ -1,3 +1,38 @@
+### Begin Data Section ###
+### Use this section to inform the servers names and roles ###
+
+# Copy and past the roles names below to match the exact information:  
+# Role = "LAN Server", "RDS Server", "Domain Controller", "DHCP Server", "DNS Server", "Print Server", "Host Server", "Cloud BU", "SQL Server", "Exchange Server", "SQL Server", "Application Server", "Web Server", "Print Server"
+
+$MyData=
+@{
+    AllNodes = @(
+
+       
+        @{
+            NodeName = "AVM-Test"
+            Role = "LAN Server", "RDS Server", "Domain Controller", "DHCP Server", "DNS Server", "Print Server", "Host Server", "Cloud BU", "SQL Server", "Exchange Server", "SQL Server", "Application Server", "Web Server", "Print Server"
+        }
+
+        # @{
+        #     NodeName        = "ServerName"
+        #     Role            = "RoleName", "RoleName"
+        # },
+
+        # @{
+        #     NodeName         = "ServerName"
+        #     Role             = "RoleName"
+        # }
+
+
+    )
+    
+}
+
+### End Data Section ###
+
+
+### Begin Configuration Section ###
 
 configuration WindowsServer {
 
@@ -94,7 +129,7 @@ configuration WindowsServer {
         }
 
         # Limit sessions from the same user to 3 on RDS server
-        Registry RDSSingleSession {
+        Registry RDSLimitSession {
             Key = 'HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server'
             ValueName = 'IdleWinStationPoolCount'
             Ensure = 'Present'
@@ -438,6 +473,6 @@ configuration WindowsServer {
 
     
 
-} #configuration
+}
 
-WindowsServer -ConfigurationData WindowsServerConfig.psd1
+WindowsServer -OutputPath C:\DSC -ConfigurationData $MyData -Verbose

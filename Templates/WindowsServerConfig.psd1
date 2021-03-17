@@ -1,15 +1,15 @@
 
 
 # Roles names we have been using: 
-# Role = "LAN Server", "RDS Server", "DC", "DHCP", "DNS", "Print Server", "Host Server", "Cloud BU", "SQL Server", "Exchange Server", "SQL Server", "Application Server", "Web Server"
+# Role = "LAN Server", "RDS Server", "Domain Controller", "DHCP Server", "DNS Server", "Print Server", "Host Server", "Cloud BU", "SQL Server", "Exchange Server", "SQL Server", "Application Server", "Web Server", "Print Server"
 
 @{
     AllNodes = @(
 
        
         @{
-            NodeName = "ServerName"
-            Role = "RoleName"
+            NodeName = "WindowsServer"
+            Role = "LAN Server", "RDS Server", "Domain Controller", "DHCP Server", "DNS Server", "Print Server", "Host Server", "Cloud BU", "SQL Server", "Exchange Server", "SQL Server", "Application Server", "Web Server", "Print Server"
         }
 
         # @{
