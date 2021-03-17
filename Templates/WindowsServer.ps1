@@ -11,13 +11,13 @@ $MyData=
        
         @{
             NodeName = "AVM-Test"
-            Role = "LAN Server", "RDS Server", "Domain Controller", "DHCP Server", "DNS Server", "Print Server", "Host Server", "Cloud BU", "SQL Server", "Exchange Server", "SQL Server", "Application Server", "Web Server", "Print Server"
-        }
+            Role = "LAN Server", "RDS Server", "Cloud BU", "SQL Server", "Exchange Server", "SQL Server", "Application Server", "Web Server", "Print Server"
+        },
 
-        # @{
-        #     NodeName        = "ServerName"
-        #     Role            = "RoleName", "RoleName"
-        # },
+        @{
+            NodeName        = "AVM-Test02"
+            Role            = "Domain Controller", "DHCP Server", "DNS Server", "Print Server"
+        }
 
         # @{
         #     NodeName         = "ServerName"
