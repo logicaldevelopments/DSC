@@ -475,4 +475,7 @@ configuration WindowsServer {
 
 }
 
-WindowsServer -OutputPath C:\DSC -ConfigurationData $MyData -Verbose
+### End Configuration Section ###
+
+
+WindowsServer -ConfigurationData $MyData
