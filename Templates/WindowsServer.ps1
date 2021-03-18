@@ -174,7 +174,7 @@ configuration WindowsServer {
             ValueData = '1'
         }
 
-        # Windows Firewall Rules      
+        # Windows Firewall Rules    
 
             Firewall EnableADDS {
                 Name = 'Active Directory Domain Services'
@@ -429,25 +429,17 @@ configuration WindowsServer {
         }
 
 
-        # Logon Script for BGInfo
-        File PSBGInfo {
-            DestinationPath = 'C:\DSC\BGInfo.ps1'
-            Contents = 'Windows Server Configuration is complete, please check the status on Azure'
-            Type = 'File'
-            Ensure = 'Present'
-
+        # Dowload BGInfo PS to All Users StartUp folder
+        Script BGInStartUpFolder {
+            SetScript = { wget -o "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\BGInfo.ps1" https://github.com/logicaldevelopments/DSC/blob/main/BGInfo/BGinfo.ps1 }
+            TestScript = { Test-Path "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\BGInfo.ps1" }
+            GetScript = { @{ Result = (Get-Content "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\BGInfo.ps1") } }
         }
 
-        LogonScript BGInfo {
-            ScriptPath = 'C:\DSC\BGInfo.ps1'
-            RunAt = 'Logon'
-            ScriptType = 'PowerShell'
-            Index = 0
-        }
 
 
         # Report the configuration job is complete
-        File Progress01 {
+        File ReportFinished {
             DestinationPath = 'C:\DSC\ServerConfig-Complete.txt'
             Contents = 'Windows Server Configuration is complete, please check the status on Azure'
             Type = 'File'
