@@ -430,12 +430,19 @@ configuration WindowsServer {
 
 
         # Logon Script for BGInfo
+        File PSBGInfo {
+            DestinationPath = 'C:\DSC\BGInfo.ps1'
+            Contents = 'Windows Server Configuration is complete, please check the status on Azure'
+            Type = 'File'
+            Ensure = 'Present'
+
+        }
+
         LogonScript BGInfo {
             ScriptPath = 'C:\DSC\BGInfo.ps1'
             RunAt = 'Logon'
             ScriptType = 'PowerShell'
-            Index = 4
-            [Parameters = [String]]
+            Index = 0
         }
 
 
