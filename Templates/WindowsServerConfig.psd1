@@ -1,6 +1,7 @@
+### Begin Data Section ###
+### Use this section to inform the servers names and roles ###
 
-
-# Roles names we have been using: 
+# Copy and past the roles names below to match the exact information:  
 # Role = "LAN Server", "RDS Server", "Domain Controller", "DHCP Server", "DNS Server", "Print Server", "Host Server", "Cloud BU", "SQL Server", "Exchange Server", "SQL Server", "Application Server", "Web Server", "Print Server"
 
 @{
@@ -8,14 +9,14 @@
 
        
         @{
-            NodeName = "WindowsServer"
-            Role = "LAN Server", "RDS Server", "Domain Controller", "DHCP Server", "DNS Server", "Print Server", "Host Server", "Cloud BU", "SQL Server", "Exchange Server", "SQL Server", "Application Server", "Web Server", "Print Server"
-        }
+            NodeName = "AVM-Test"
+            Role = "LAN Server", "RDS Server", "Cloud BU", "SQL Server", "Exchange Server", "SQL Server", "Application Server", "Web Server", "Print Server", "Domain Controller", "DHCP Server", "DNS Server", "Print Server"
+        },
 
-        # @{
-        #     NodeName        = "ServerName"
-        #     Role            = "RoleName", "RoleName"
-        # },
+        @{
+            NodeName = "AVPX-120"
+            Role = "Application Server"
+        }
 
         # @{
         #     NodeName         = "ServerName"
@@ -26,3 +27,5 @@
     )
     
 }
+
+### End Data Section ###

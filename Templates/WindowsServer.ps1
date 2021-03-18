@@ -1,35 +1,3 @@
-### Begin Data Section ###
-### Use this section to inform the servers names and roles ###
-
-# Copy and past the roles names below to match the exact information:  
-# Role = "LAN Server", "RDS Server", "Domain Controller", "DHCP Server", "DNS Server", "Print Server", "Host Server", "Cloud BU", "SQL Server", "Exchange Server", "SQL Server", "Application Server", "Web Server", "Print Server"
-
-$MyData=
-@{
-    AllNodes = @(
-
-       
-        @{
-            NodeName = "AVM-Test"
-            Role = "LAN Server", "RDS Server", "Cloud BU", "SQL Server", "Exchange Server", "SQL Server", "Application Server", "Web Server", "Print Server"
-        },
-
-        @{
-            NodeName        = "AVM-Test02"
-            Role            = "Domain Controller", "DHCP Server", "DNS Server", "Print Server"
-        }
-
-        # @{
-        #     NodeName         = "ServerName"
-        #     Role             = "RoleName"
-        # }
-
-
-    )
-    
-}
-
-### End Data Section ###
 
 
 ### Begin Configuration Section ###
@@ -40,6 +8,8 @@ configuration WindowsServer {
     Import-DscResource -Module ComputerManagementDsc
     Import-DscResource -Module UpdateServicesDsc
     Import-DscResource -Module NetworkingDsc
+    Import-DscResource -Module DscR_FileContent
+    Import-DscResource -Module Dscr_LogonScript
 
 
 
@@ -206,247 +176,247 @@ configuration WindowsServer {
 
         # Windows Firewall Rules      
 
-        Firewall EnableADDS {
-            Name = 'Active Directory Domain Services'
-            Enabled = 'True'
-        }
+            Firewall EnableADDS {
+                Name = 'Active Directory Domain Services'
+                Enabled = 'True'
+            }
 
-        Firewall EnableADWeb {
-            Name = 'Active Directory Web Services'
-            Enabled = 'True'
-        }
-
-
-        Firewall EnableCorenet {
-            Name = 'Core Networking'
-            Enabled = 'True'
-        }
-
-        Firewall EnableCortana {
-            Name = 'Cortana'
-            Enabled = 'True'
-        }
-
-        Firewall EnableDFSM {
-            Name = 'DFS Management'
-            Enabled = 'True'
-        }
-
-        Firewall EnableDFSRep {
-            Name = 'DFS Replication'
-            Enabled = 'True'
-        }
-
-        Firewall EnableDHCPRelay {
-            Name = 'DHCP Relay Agent'
-            Enabled = 'True'
-        }
-
-        Firewall EnableDHCPServer {
-            Name = 'DHCP Server'
-            Enabled = 'True'
-        }
-
-        Firewall EnableDHCPManagement {
-            Name = 'DHCP Server Management'
-            Enabled = 'True'
-        }
-
-        Firewall EnableDHCP6 {
-            Name = 'DHCPv6 Relay Agent'
-            Enabled = 'True'
-        }
-
-        Firewall EnableDiagnostics {
-            Name = 'DiagTrack'
-            Enabled = 'True'
-        }
-
-        Firewall EnableRRAS {
-            Name = 'Dial Protocol Server'
-            Enabled = 'True'
-        }
-
-        Firewall EnableDNSServer {
-            Name = 'DNS Service'
-            Enabled = 'True'
-        }
+            Firewall EnableADWeb {
+                Name = 'Active Directory Web Services'
+                Enabled = 'True'
+            }
 
 
-        Firewall EnableEmails {
-            Name = 'eMail and Accounts'
-            Enabled = 'True'
-        }
+            Firewall EnableCorenet {
+                Name = 'Core Networking'
+                Enabled = 'True'
+            }
 
-        Firewall EnableDFRS {
-            Name = 'File Replication'
-            Enabled = 'True'
-        }
+            Firewall EnableCortana {
+                Name = 'Cortana'
+                Enabled = 'True'
+            }
 
-        Firewall EnableFSManagement {
-            Name = 'File Server Remote Management'
-            Enabled = 'True'
-        }
+            Firewall EnableDFSM {
+                Name = 'DFS Management'
+                Enabled = 'True'
+            }
 
-        Firewall EnableFSSharing {
-            Name = 'File and Printer Sharing'
-            Enabled = 'True'
-        }
+            Firewall EnableDFSRep {
+                Name = 'DFS Replication'
+                Enabled = 'True'
+            }
 
-        Firewall EnableHyperV {
-            Name = 'Hyper-V'
-            Enabled = 'True'
-        }
+            Firewall EnableDHCPRelay {
+                Name = 'DHCP Relay Agent'
+                Enabled = 'True'
+            }
 
-        Firewall EnableHyperVManagement {
-            Name = 'Hyper-V Management Clients'
-            Enabled = 'True'
-        }
+            Firewall EnableDHCPServer {
+                Name = 'DHCP Server'
+                Enabled = 'True'
+            }
 
-        Firewall EnableKerberos {
-            Name = 'Kerberos Key Distribution Service'
-            Enabled = 'True'
-        }
+            Firewall EnableDHCPManagement {
+                Name = 'DHCP Server Management'
+                Enabled = 'True'
+            }
 
-        Firewall EnableNetDiscovery {
-            Name = 'Network Discovery'
-            Enabled = 'True'
-        }
+            Firewall EnableDHCP6 {
+                Name = 'DHCPv6 Relay Agent'
+                Enabled = 'True'
+            }
 
-        Firewall EnableNetLogon {
-            Name = 'Netlogon Service'
-            Enabled = 'True'
-        }
+            Firewall EnableDiagnostics {
+                Name = 'DiagTrack'
+                Enabled = 'True'
+            }
 
-        Firewall EnablePerfmon {
-            Name = 'Performance Logs and Alerts'
-            Enabled = 'True'
-        }
+            Firewall EnableRRAS {
+                Name = 'Dial Protocol Server'
+                Enabled = 'True'
+            }
 
-        Firewall EnableRemoteAccess {
-            Name = 'Remote Access'
-            Enabled = 'True'
-        }
+            Firewall EnableDNSServer {
+                Name = 'DNS Service'
+                Enabled = 'True'
+            }
 
-        Firewall EnableRAQuarantine {
-            Name = 'Remote Access Quarantine'
-            Enabled = 'True'
-        }
 
-        Firewall EnableRemoteAdm {
-            Name = 'Remote Administration'
-            Enabled = 'True'
-        }
+            Firewall EnableEmails {
+                Name = 'eMail and Accounts'
+                Enabled = 'True'
+            }
 
-        Firewall EnableRemoteDesktop {
-            Name = 'Remote Desktop'
-            Enabled = 'True'
-        }
+            Firewall EnableDFRS {
+                Name = 'File Replication'
+                Enabled = 'True'
+            }
 
-        Firewall EnableRemoteEventLog {
-            Name = 'Remote Event Log Management'
-            Enabled = 'True'
-        }
+            Firewall EnableFSManagement {
+                Name = 'File Server Remote Management'
+                Enabled = 'True'
+            }
 
-        Firewall EnableRemoteEventMonitor {
-            Name = 'Remote Event Monitor'
-            Enabled = 'True'
-        }
+            Firewall EnableFSSharing {
+                Name = 'File and Printer Sharing'
+                Enabled = 'True'
+            }
 
-        Firewall EnableRemoteScheduledTasks {
-            Name = 'Remote Scheduled Tasks Management'
-            Enabled = 'True'
-        }
+            Firewall EnableHyperV {
+                Name = 'Hyper-V'
+                Enabled = 'True'
+            }
 
-        Firewall EnableRemoveServiceMgt {
-            Name = 'Remote Service Management'
-            Enabled = 'True'
-        }
+            Firewall EnableHyperVManagement {
+                Name = 'Hyper-V Management Clients'
+                Enabled = 'True'
+            }
 
-        Firewall EnableRemoteShutdown {
-            Name = 'Remote Shutdown'
-            Enabled = 'True'
-        }
+            Firewall EnableKerberos {
+                Name = 'Kerberos Key Distribution Service'
+                Enabled = 'True'
+            }
 
-        Firewall EnableRemoteVolumeMgt {
-            Name = 'Remote Volume Management'
-            Enabled = 'True'
-        }
+            Firewall EnableNetDiscovery {
+                Name = 'Network Discovery'
+                Enabled = 'True'
+            }
 
-        Firewall EnableRRASS {
-            Name = 'Routing and Remote Access'
-            Enabled = 'True'
-        }
+            Firewall EnableNetLogon {
+                Name = 'Netlogon Service'
+                Enabled = 'True'
+            }
 
-        Firewall EnableSSTP {
-            Name = 'Secure Socket Tunneling Protocol'
-            Enabled = 'True'
-        }
+            Firewall EnablePerfmon {
+                Name = 'Performance Logs and Alerts'
+                Enabled = 'True'
+            }
 
-        Firewall EnableHTTP {
-            Name = 'Secure World Wide Web Services (HTTPS)'
-            Enabled = 'True'
-        }
+            Firewall EnableRemoteAccess {
+                Name = 'Remote Access'
+                Enabled = 'True'
+            }
 
-        Firewall EnableSmartScreen {
-            Name = 'SmartScreen'
-            Enabled = 'True'
-        }
+            Firewall EnableRAQuarantine {
+                Name = 'Remote Access Quarantine'
+                Enabled = 'True'
+            }
 
-        Firewall EnableVMMonitoring {
-            Name = 'Virtual Machine Monitoring'
-            Enabled = 'True'
-        }
+            Firewall EnableRemoteAdm {
+                Name = 'Remote Administration'
+                Enabled = 'True'
+            }
 
-        Firewall EnableWFRM {
-            Name = 'Windows Firewall Remote Management'
-            Enabled = 'True'
-        }
+            Firewall EnableRemoteDesktop {
+                Name = 'Remote Desktop'
+                Enabled = 'True'
+            }
 
-        Firewall EnableWRM {
-            Name = 'Windows Remote Management'
-            Enabled = 'True'
-        }
+            Firewall EnableRemoteEventLog {
+                Name = 'Remote Event Log Management'
+                Enabled = 'True'
+            }
 
-        Firewall EnableWRMI {
-            Name = 'Windows Remote Management Instrumentation (WMI)'
-            Enabled = 'True'
-        }
+            Firewall EnableRemoteEventMonitor {
+                Name = 'Remote Event Monitor'
+                Enabled = 'True'
+            }
 
-        Firewall EnableWRMC {
-            Name = 'Windows Remote Management (Compatibility)'
-            Enabled = 'True'
-        }
+            Firewall EnableRemoteScheduledTasks {
+                Name = 'Remote Scheduled Tasks Management'
+                Enabled = 'True'
+            }
 
-        Firewall EnableWB {
-            Name = 'Windows Backup'
-            Enabled = 'True'
-        }
+            Firewall EnableRemoveServiceMgt {
+                Name = 'Remote Service Management'
+                Enabled = 'True'
+            }
 
-        Firewall EnableWDLS {
-            Name = 'Windows Default Lock Screen'
-            Enabled = 'True'
-        }
+            Firewall EnableRemoteShutdown {
+                Name = 'Remote Shutdown'
+                Enabled = 'True'
+            }
 
-        Firewall EnableWSE {
-            Name = 'Windows Shell Experience'
-            Enabled = 'True'
-        }
+            Firewall EnableRemoteVolumeMgt {
+                Name = 'Remote Volume Management'
+                Enabled = 'True'
+            }
 
-        Firewall EnableWSA {
-            Name = 'Work or School Account'
-            Enabled = 'True'
-        }
+            Firewall EnableRRASS {
+                Name = 'Routing and Remote Access'
+                Enabled = 'True'
+            }
 
-        Firewall EnableWWWS {
-            Name = 'World Wide web Services (HTTP)'
-            Enabled = 'True'
-        }
+            Firewall EnableSSTP {
+                Name = 'Secure Socket Tunneling Protocol'
+                Enabled = 'True'
+            }
 
-        Firewall EnableYA {
-            Name = 'Your Account'
-            Enabled = 'True'
-        }
+            Firewall EnableHTTP {
+                Name = 'Secure World Wide Web Services (HTTPS)'
+                Enabled = 'True'
+            }
+
+            Firewall EnableSmartScreen {
+                Name = 'SmartScreen'
+                Enabled = 'True'
+            }
+
+            Firewall EnableVMMonitoring {
+                Name = 'Virtual Machine Monitoring'
+                Enabled = 'True'
+            }
+
+            Firewall EnableWFRM {
+                Name = 'Windows Firewall Remote Management'
+                Enabled = 'True'
+            }
+
+            Firewall EnableWRM {
+                Name = 'Windows Remote Management'
+                Enabled = 'True'
+            }
+
+            Firewall EnableWRMI {
+                Name = 'Windows Remote Management Instrumentation (WMI)'
+                Enabled = 'True'
+            }
+
+            Firewall EnableWRMC {
+                Name = 'Windows Remote Management (Compatibility)'
+                Enabled = 'True'
+            }
+
+            Firewall EnableWB {
+                Name = 'Windows Backup'
+                Enabled = 'True'
+            }
+
+            Firewall EnableWDLS {
+                Name = 'Windows Default Lock Screen'
+                Enabled = 'True'
+            }
+
+            Firewall EnableWSE {
+                Name = 'Windows Shell Experience'
+                Enabled = 'True'
+            }
+
+            Firewall EnableWSA {
+                Name = 'Work or School Account'
+                Enabled = 'True'
+            }
+
+            Firewall EnableWWWS {
+                Name = 'World Wide web Services (HTTP)'
+                Enabled = 'True'
+            }
+
+            Firewall EnableYA {
+                Name = 'Your Account'
+                Enabled = 'True'
+            }
 
 
 
@@ -456,6 +426,16 @@ configuration WindowsServer {
             ValueName = 'AutoReboot'
             Ensure = 'Present'
             ValueData = '0'
+        }
+
+
+        # Logon Script for BGInfo
+        LogonScript BGInfo {
+            ScriptPath = 'C:\DSC\BGInfo.ps1'
+            RunAt = 'Logon'
+            ScriptType = 'PowerShell'
+            Index = 4
+            [Parameters = [String]]
         }
 
 
@@ -478,4 +458,4 @@ configuration WindowsServer {
 ### End Configuration Section ###
 
 
-WindowsServer -ConfigurationData $MyData
+WindowsServer -ConfigurationData WindowsServerConfig.psd1
