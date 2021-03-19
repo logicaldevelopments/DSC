@@ -9,14 +9,14 @@
 
        
         @{
-            NodeName = "AVM-Test"
-            Role = "LAN Server", "RDS Server", "Cloud BU", "SQL Server", "Exchange Server", "SQL Server", "Application Server", "Web Server", "Print Server", "Domain Controller", "DHCP Server", "DNS Server", "Print Server"
-        },
-
-        @{
-            NodeName = "AVPX-120"
-            Role = "Application Server"
+            NodeName = "AVM-DSC"
+            Role = "Application Server", "Web Server", "Print Server", "DHCP Server", "DNS Server", "Print Server"
         }
+
+        # @{
+        #     NodeName = "AVM-Test03"
+        #     Role = "Application Server"
+        # }
 
         # @{
         #     NodeName         = "ServerName"

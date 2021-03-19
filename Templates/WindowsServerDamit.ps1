@@ -1,5 +1,5 @@
 configuration WindowsServer {
-    Param ()
+
     Import-DscResource -Module PSDesiredStateConfiguration
     Import-DscResource -Module ComputerManagementDsc
     Import-DscResource -Module UpdateServicesDsc
@@ -8,11 +8,12 @@ configuration WindowsServer {
     Import-DscResource -Module Dscr_LogonScript
 
 
+
     ### Starting Role Based Section ###
     # Role Based Section: Install and configure roles based in the content of the Role field specified in the configuration file
 
     # Web server role:
-    Node $AllNodes.Where{$_.Role -contains "Web Server"}.NodeName {    
+     Node $AllNodes.Where{$_.Role -contains "Web Server"}.NodeName {    
       
         WindowsFeature WebServer {
             Name = 'Web-Server'
@@ -32,6 +33,10 @@ configuration WindowsServer {
     }
         
 
+
+
+
+
     # Hyper-V server role:       
     Node $AllNodes.Where{$_.Role -contains "Host Server"}.NodeName { 
         WindowsFeature HyperV {
@@ -40,6 +45,9 @@ configuration WindowsServer {
         }
     }    
         
+
+
+
 
     # Active Directory Domain Services role: 
     Node $AllNodes.Where{$_.Role -contains "Domain Controller"}.NodeName {       
@@ -50,7 +58,8 @@ configuration WindowsServer {
         
     }
 
-     
+
+        
 
     # File and Storage Server role, LAN Server, LANWin Server: 
     Node $AllNodes.Where{$_.Role -contains "LAN Server"}.NodeName {       
@@ -72,106 +81,90 @@ configuration WindowsServer {
     }    
 
 
-    # # Remote Desktop Server role:
-    # Node $AllNodes.Where{$_.Role -contains "RDS Server"}.NodeName {        
-    #     WindowsFeature RDSServer {
-    #         Name = 'Remote-Desktop-Services'
-    #         Ensure = 'Present'
-    #     }
+    # Remote Desktop Server role:
+    Node $AllNodes.Where{$_.Role -contains "RDS Server"}.NodeName {        
+        WindowsFeature RDSServer {
+            Name = 'Remote-Desktop-Services'
+            Ensure = 'Present'
+        }
 
-    #     # Limit sessions from the same user to 3 on RDS server
-    #     Registry RDSLimitSession {
-    #         Key = 'HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server'
-    #         ValueName = 'IdleWinStationPoolCount'
-    #         Ensure = 'Present'
-    #         ValueData = '3'
-    #     }
+        # Limit sessions from the same user to 3 on RDS server
+        Registry RDSLimitSession {
+            Key = 'HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server'
+            ValueName = 'IdleWinStationPoolCount'
+            Ensure = 'Present'
+            ValueData = '3'
+        }
 
 
-    # }    
+    }    
         
     
     ### Ending Role Based Section ###
 
+    
 
-
-
-
-
-    Node $AllNodes.NodeName 
-    {
-
-        # Set timezone to PST
-        TimeZone TimePST {
-            IsSingleInstance = 'Yes'
-            TimeZone = 'Pacific Standard Time'            
-        }
-
-        # Set ESC of Internet Explorer
-        IEEnhancedSecurityConfiguration IEUsers {
-            Enabled = 1
-            Role = 'Users'
-            SuppressRestart = 1
-        }
-
-        IEEnhancedSecurityConfiguration IEAdmins {
-            Enabled = 0
-            Role = 'Administrators'
-            SuppressRestart = 1
-        }
-
-
-        # Disable Admin Approval Mode on UAC
-        UserAccountControl UACConfig {
-            IsSingleInstance = 'Yes'
-            ConsentPromptBehaviorAdmin = 0
-            ConsentPromptBehaviorUser = 1
-            
-        }          
-            
-           
+    # ### Starting Default Configuration Settings ###    
+    # # Default Windows Configurations settings: Those settings are standard and applied to every server:
+    
+    
+    Node $AllNodes.NodeName {
         
+    #     # Set timezone to PST
+    #     TimeZone TimePST {
+    #         IsSingleInstance = "Yes"
+    #         TimeZone = 'Pacific Standard Time'            
+    #     }
+
+    #     # Set ESC of Internet Explorer
+    #     IEEnhancedSecurityConfiguration IEUsers {
+    #         Enabled = 1
+    #         Role = 'Users'
+    #         SuppressRestart = 1
+    #     }
+
+    #     IEEnhancedSecurityConfiguration IEAdmins {
+    #         Enabled = 0
+    #         Role = 'Administrators'
+    #         SuppressRestart = 1
+    #     }
 
 
-        # Windows Updates - Disable Automatic Installation
-        Registry WUAUDisableAutoInstall {
-            Key = 'HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WindowsUpdate\AU'
-            ValueName = 'NoAutoUpdate'
-            Ensure = 'Present'
-            ValueData = '1'
-        }
+    #     # Disable Admin Approval Mode on UAC
+    #     UserAccountControl UACConfig {
+    #         IsSingleInstance = 'Yes'
+    #         ConsentPromptBehaviorAdmin = 0
+    #         ConsentPromptBehaviorUser = 1
+            
+    #     }
+               
+            
+            
+    #     # Enable Remote Desktop Connection
+    #     RemoteDesktopAdmin EnableRDP {
+    #         IsSingleInstance = 'Yes'
+    #         Ensure = 'Present'
+    #         UserAuthentication = 'NonSecure'
+    #     }
+
+    #     # RDS Disable single session per user
+    #     Registry RDSSingleSession {
+    #         Key = 'HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server'
+    #         ValueName = 'fSingleSessionPerUser'
+    #         Ensure = 'Present'
+    #         ValueData = '0'
+    #     }
 
 
-        # Disable Automatic Restart on Crashes
-        Registry DisableAutoRestart {
-            Key = 'HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\CrashControl'
-            ValueName = 'AutoReboot'
-            Ensure = 'Present'
-            ValueData = '0'
-        }
+    #     # Windows Updates - Disable Automatic Installation
+    #     Registry WUAUDisableAutoInstall {
+    #         Key = 'HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WindowsUpdate\AU'
+    #         ValueName = 'NoAutoUpdate'
+    #         Ensure = 'Present'
+    #         ValueData = '1'
+    #     }
 
-
-        #Dowload BGInfo PS to All Users StartUp folder
-        Script BGInStartUpFolder {
-            SetScript = { wget -o "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\BGInfo.ps1" https://github.com/logicaldevelopments/DSC/blob/main/BGInfo/BGinfo.ps1 }
-            TestScript = { Test-Path "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\BGInfo.ps1" }
-            GetScript = { @{ Result = (Get-Content "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\BGInfo.ps1") } }
-        }
-        # Script BGInfoDownload {
-        #     SetScript = { wget -o "C:\DSC\BGInfo.ps1" https://github.com/logicaldevelopments/DSC/blob/main/BGInfo/BGinfo.ps1 }
-        #     TestScript = { Test-Path "C:\DSC\BGInfo.ps1" }
-        #     GetScript = { @{ Result = (Get-Content "C:\DSC\BGInfo.ps1") } }
-        # }
-
-        # LogonScript BGInfoSetLogon {
-        #     DependsOn = 'BGInfoDownload'
-        #     ScriptPath = "C:\DSC\BGInfo.ps1"
-        #     RunAt = 'Logon'
-        #     ScriptType = 'PowerShell'
-        #     Index = 1            
-        # }
-
-
+       
         # Windows Firewall Rules    
 
         Firewall EnableADDS {
@@ -418,54 +411,89 @@ configuration WindowsServer {
 
 
 
-        # #Enable Remote Desktop Connection
-        # RemoteDesktopAdmin EnableRDP {
-        #     IsSingleInstance = 'Yes'
-        #     Ensure = 'Present'
-        #     UserAuthentication = 'NonSecure'
-        # }
-
-        # # RDS Disable single session per user
-        # Registry RDSSingleSession {
-        #     Key = 'HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server'
-        #     ValueName = 'fSingleSessionPerUser'
+        # # Disable Automatic Restart on Crashes
+        # Registry DisableAutoRestart {
+        #     Key = 'HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\CrashControl'
+        #     ValueName = 'AutoReboot'
         #     Ensure = 'Present'
         #     ValueData = '0'
         # }
 
 
+        # Dowload BGInfo PS to All Users StartUp folder
+        # Script BGInStartUpFolder {
+        #     SetScript = { wget -o "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\BGInfo.ps1" https://github.com/logicaldevelopments/DSC/blob/main/BGInfo/BGinfo.ps1 }
+        #     TestScript = { Test-Path "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\BGInfo.ps1" }
+        #     GetScript = { @{ Result = (Get-Content "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\BGInfo.ps1") } }
+        # }
+        # Script BGInfoDownload {
+        #     SetScript = { wget -o "C:\DSC\BGInfo.ps1" https://github.com/logicaldevelopments/DSC/blob/main/BGInfo/BGinfo.ps1 }
+        #     TestScript = { Test-Path "C:\DSC\BGInfo.ps1" }
+        #     GetScript = { @{ Result = (Get-Content "C:\DSC\BGInfo.ps1") } }
+        # }
+
+        # LogonScript BGInfoSetLogon {
+        #     DependsOn = 'BGInfoDownload'
+        #     ScriptPath = "C:\DSC\BGInfo.ps1"
+        #     RunAt = 'Logon'
+        #     ScriptType = 'PowerShell'
+        #     Index = 1
+            
+        # }
+
+
+
         # Report the configuration job is complete
         File ReportFinished {
             DestinationPath = 'C:\DSC\ServerConfig-Complete.txt'
-            Contents = 'V2 Windows Server Configuration is complete, please check the status on Azure'
+            Contents = 'Windows Server Configuration is complete, please check the status on Azure'
             Type = 'File'
             Ensure = 'Present'
-        }  
-        
-    }
+        }   
+
+    
 
 }
 
+### End Configuration Section ###
 
-$MyData = @{
+
+
+
+### Begin Data Section ###
+### Use this section to inform the servers names and roles ###
+
+# Copy and past the roles names below to match the exact information:  
+# Role = "LAN Server", "RDS Server", "Domain Controller", "DHCP Server", "DNS Server", "Print Server", "Host Server", "Cloud BU", "SQL Server", "Exchange Server", "SQL Server", "Application Server", "Web Server"
+
+$ServerInfo =
+@{
     AllNodes = @(
-        
+
+       
         @{
             NodeName = "AVM-DSC"
             Role = "Application Server"
-        },
-        
-        @{
-            NodeName = "AVM-Test-DSC"
-            Role = "Application Server", "RDS Server", "Domain Controller", "DHCP Server", "DNS Server", "Print Server", "Web Server"
-        }    
+        }
+
+        # @{
+        #     NodeName = "AVM-DSC02"
+        #     Role = "Application Server"
+        # }
+
+        # @{
+        #     NodeName         = "ServerName"
+        #     Role             = "RoleName"
+        # }
 
 
     )
-
+    
 }
 
+### End Data Section ###
 
 
 
-WindowsServer -ConfigurationData $MyData
+
+WindowsServer -OutputPath C:\DSC -ConfigurationData $ServerInfo -Verbose
