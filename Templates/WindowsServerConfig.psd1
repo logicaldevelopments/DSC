@@ -9,18 +9,18 @@
 
        
         @{
-            NodeName = "AVM-DSC"
+            NodeName = "AVM-Randy"
             Role = "Application Server", "Web Server", "Print Server", "DHCP Server", "DNS Server", "Print Server"
+        },
+
+        @{
+            NodeName = "AVM-Test"
+            Role = "Application Server", "Domain Controller"
         }
 
         # @{
-        #     NodeName = "AVM-Test03"
-        #     Role = "Application Server"
-        # }
-
-        # @{
         #     NodeName         = "ServerName"
-        #     Role             = "RoleName"
+        #     Role             = "RoleName", "Domain Controller"
         # }
 
 

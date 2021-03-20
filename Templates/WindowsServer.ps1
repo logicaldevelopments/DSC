@@ -107,6 +107,37 @@ configuration WindowsServer {
             TimeZone = 'Pacific Standard Time'            
         }
 
+        # #Dowload BGInfo PS to All Users StartUp folder
+        # Script BGInStartUpFolder {
+        #     SetScript = { wget -o "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\BGInfo.ps1" https://github.com/logicaldevelopments/DSC/blob/main/BGInfo/BGinfo.ps1 }
+        #     TestScript = { Test-Path "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\BGInfo.ps1" }
+        #     GetScript = { @{ Result = (Get-Content "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\BGInfo.ps1") } }
+        # }
+        # Script BGInfoDownload {
+        #     SetScript = { wget -o "C:\DSC\BGInfo.ps1" https://github.com/logicaldevelopments/DSC/blob/main/BGInfo/BGinfo.ps1 }
+        #     TestScript = { Test-Path "C:\DSC\BGInfo.ps1" }
+        #     GetScript = { @{ Result = (Get-Content "C:\DSC\BGInfo.ps1") } }
+        # }
+
+        # LogonScript BGInfoSetLogon {
+        #     ScriptPath = "C:\DSC\BGInfo.ps1"
+        #     RunAt = 'Logon'
+        #     ScriptType = 'PowerShell'
+        #     Index = 1            
+        # }
+
+        # ScheduledTask ScheduledTaskLogonAdd
+        # {
+        #     TaskName           = 'BGInfo'
+        #     TaskPath           = 'C:\DSC\BGInfo.ps1'
+        #     ActionExecutable   = 'C:\windows\system32\WindowsPowerShell\v1.0\powershell.exe'
+        #     ScheduleType       = 'AtLogOn'
+        #     RepeatInterval     = '02:00:00'
+        #     RepetitionDuration = '10:00:00'
+        # }
+
+
+
         # Set ESC of Internet Explorer
         IEEnhancedSecurityConfiguration IEUsers {
             Enabled = 1
@@ -129,8 +160,6 @@ configuration WindowsServer {
             
         }          
             
-           
-        
 
 
         # Windows Updates - Disable Automatic Installation
@@ -151,25 +180,7 @@ configuration WindowsServer {
         }
 
 
-        #Dowload BGInfo PS to All Users StartUp folder
-        Script BGInStartUpFolder {
-            SetScript = { wget -o "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\BGInfo.ps1" https://github.com/logicaldevelopments/DSC/blob/main/BGInfo/BGinfo.ps1 }
-            TestScript = { Test-Path "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\BGInfo.ps1" }
-            GetScript = { @{ Result = (Get-Content "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\BGInfo.ps1") } }
-        }
-        # Script BGInfoDownload {
-        #     SetScript = { wget -o "C:\DSC\BGInfo.ps1" https://github.com/logicaldevelopments/DSC/blob/main/BGInfo/BGinfo.ps1 }
-        #     TestScript = { Test-Path "C:\DSC\BGInfo.ps1" }
-        #     GetScript = { @{ Result = (Get-Content "C:\DSC\BGInfo.ps1") } }
-        # }
-
-        # LogonScript BGInfoSetLogon {
-        #     DependsOn = 'BGInfoDownload'
-        #     ScriptPath = "C:\DSC\BGInfo.ps1"
-        #     RunAt = 'Logon'
-        #     ScriptType = 'PowerShell'
-        #     Index = 1            
-        # }
+        
 
 
         # Windows Firewall Rules    
@@ -447,25 +458,4 @@ configuration WindowsServer {
 }
 
 
-$MyData = @{
-    AllNodes = @(
-        
-        @{
-            NodeName = "AVM-DSC"
-            Role = "Application Server"
-        },
-        
-        @{
-            NodeName = "AVM-Test-DSC"
-            Role = "Application Server", "RDS Server", "Domain Controller", "DHCP Server", "DNS Server", "Print Server", "Web Server"
-        }    
-
-
-    )
-
-}
-
-
-
-
-WindowsServer -ConfigurationData $MyData
+WindowsServer -ConfigurationData WindowsServerConfig.psd1
